@@ -8,21 +8,23 @@ class Order
 {
     private $id;
     private $clientId;
-    private $confirmed;
-    private $cart;
+    private $shippingAdress;
+    private $confirmedDate;
+
 
     /**
      * Order constructor.
      * @param $id
      * @param $clientId
-     * @param $confirmed
+     * @param $shippingAdress
+     * @param $confirmedDate
      */
-
-    public function __construct($id, $clientId, $confirmed)
+    public function __construct($id, $clientId, $shippingAdress, $confirmedDate)
     {
         $this->id = $id;
         $this->clientId = $clientId;
-        $this->confirmed = $confirmed;
+        $this->shippingAdress = $shippingAdress;
+        $this->confirmedDate = $confirmedDate;
     }
 
     /**
@@ -60,32 +62,32 @@ class Order
     /**
      * @return mixed
      */
-    public function getConfirmed()
+    public function getShippingAdress()
     {
-        return $this->confirmed;
+        return $this->shippingAdress;
     }
 
     /**
-     * @param mixed $confirmed
+     * @param mixed $shippingAdress
      */
-    public function setConfirmed($confirmed): void
+    public function setShippingAdress($shippingAdress): void
     {
-        $this->confirmed = $confirmed;
+        $this->shippingAdress = $shippingAdress;
     }
 
     /**
      * @return mixed
      */
-    public function getCart()
+    public function getConfirmedDate()
     {
-        return $this->cart;
+        return $this->confirmedDate;
     }
 
     /**
-     * @param mixed $cart
+     * @param mixed $confirmedDate
      */
-    public function setCart($cart): void
+    public function setConfirmedDate($confirmedDate): void
     {
-        $this->cart = $cart;
+        $this->confirmedDate = $confirmedDate;
     }
 }

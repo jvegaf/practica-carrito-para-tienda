@@ -12,53 +12,62 @@ class MainController
 
     private $clientC;
     private $orderC;
-    private $cartC;
     private $shopC;
     private $client;
-    private $cart;
     private $order;
-    private $simpleCart;
-    private $iDao;
 
     public function __construct()
     {
         session_start();
         $this->clientC = new ClientController();
         $this->orderC = new OrderController();
-        $this->cartC = new CartController();
         $this->shopC = new ShopController();
-        $this->iDao = new ItemDAO();
 
-        if (isset($_SESSION['client-id'])) {
-            $this->client = $this->clientC->getClientWithId($_SESSION['client-id']);
+        // revisar
+        if (isset($_SESSION['clientId'])) {
+            $this->client = $this->clientC->getClient($_SESSION['clientId']);
             $this->order = $this->orderC->getOrderOfClient($this->client->getId());
-            $this->cart = $this->cartC->getCart($this->order->getId());
+            // TODO: traer carro
         } else {
             $this->order = $this->orderC->getOrderOfClient(null);
-            if (isset($_SESSION['cart'])) {
-                $this->simpleCart = $_SESSION['cart'];
-            } else {
-                $this->simpleCart = array();
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = array();
             }
         }
     }
 
     public function addItemToCart($itemId)
     {
-        if (!$this->isClientLogged()) {
-            foreach ($this->simpleCart as $item) {
-                if ($item['itemId'] == $itemId) {
-                    $item['quantity']++;
-                    $_SESSION['cart'] = $this->simpleCart;
-                    exit();
-                }
+        foreach ($_SESSION['cart'] as $item) {
+            if ($item['itemId'] == $itemId) {
+                $item['quantity']++;
+                $_SESSION['cart'] = $_SESSION['cart'];
+                exit();
             }
-            array_push($this->simpleCart, [
-                "itemId" => $itemId,
-                "orderId" => $this->order->getId(),
-                "quantity" => 1
-            ]);
-            $_SESSION['cart'] = $this->simpleCart;
+        }
+        array_push($_SESSION['cart'], [
+            "itemId" => $itemId,
+            "orderId" => $this->order->getId(),
+            "quantity" => 1
+        ]);
+        $_SESSION['cart'] = $_SESSION['cart'];
+        if ($this->isClientLogged()) {
+            $this->orderC->addNewItemToOrder($itemId, $this->order->getId());
+        }
+    }
+
+    public function checkClientToken($token)
+    {
+        $client = $this->clientC->getClientWithToken($token);
+        if ($client) {
+            $this->client = $client;
+            $_SESSION['sesion-started'] = true;
+            $_SESSION['clientId'] = $this->client->getId();
+            $_SESSION['orderId'] = $this->orderC->getOrderOfClient($this->client->getId())->getId();
+            $oLines = $this->orderC->getOrderLinesOfOrder($this->order->getId());
+            foreach ($oLines as $item) {
+                array_push($_SESSION['cart'], $item);
+            }
         }
     }
 
@@ -70,20 +79,14 @@ class MainController
             exit();
         }
         $this->client = $resClient;
-        $this->order = $this->orderC->getOrderOfClient($this->client->getId());
-        $this->cartC->addItemsOnOldOrder($this->order->getId(), $this->simpleCart);
-        if (isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = null;
-        }
-        $this->cart = $this->cartC->getCart($this->order->getId());
+        $_SESSION['orderId'] = $this->orderC->getOrderOfClient($this->client->getId())->getId();
         $_SESSION['sesion-started'] = true;
-        $_SESSION['client-id'] = $this->client->getId();
-        /*
-         * TODO: pasar la cart a la simplecart
-         *
-         * cuidado que los itemscart no son los arrays asociativos
-         *
-         * */
+        $_SESSION['clientId'] = $this->client->getId();
+        if (!isEmpty($_SESSION['cart'])) { // si la cesta no esta vacia
+            foreach ($_SESSION['cart'] as $item){
+                $this->orderC->addNewItemToOrder($item);
+            }
+        }
         header('Location: main.php');
         exit();
     }
@@ -111,39 +114,27 @@ class MainController
 
     public function getCartItemsAmount(): int
     {
-        if (!$this->cart) {
-            return count($this->simpleCart);
-        }
-        return $this->cart->getItemsAmount();
+        return count($_SESSION['cart']);
     }
 
     public function getCartItems(): array
     {
-        if (!$this->cart) {
-            return $this->simpleCart;
-        }
-        return $this->cart->getContent();
+        return $_SESSION['cart'];
     }
 
     public function getItemFromShop($itemId): Item
     {
-        return $this->iDao->getItemWithId($itemId);
+        return $this->shopC->getItem($itemId);
     }
 
-    public function deleteSimpleCartItem($position): void
+    public function removeItemInCart($itemId)
     {
-        $_SESSION['cart'] = $this->simpleCart;
-        return;
-    }
-
-    public function removeItemFromSimpleCart($itemId)
-    {
-        foreach ($this->simpleCart as $key => $item){
-            if ($item['itemId'] == $itemId){
-                unset($this->simpleCart[$key]);
+        foreach ($_SESSION['cart'] as $key => $item) {
+            if ($item['itemId'] == $itemId) {
+                unset($_SESSION['cart'][$key]);
             }
         }
-        $_SESSION['cart'] = $this->simpleCart;
         return;
     }
+
 }

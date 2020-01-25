@@ -9,11 +9,11 @@ use ShoppingCart\Model\Order;
 class OrderDAO
 {
     private $pdo;
-    private $getOrderIdWithClientID = "SELECT id FROM `order` WHERE client_id=? AND confirmed=0";
-    private $getOrderWithId = "SELECT * FROM `order` WHERE id=?";
-    private $getOrderWithClientId = "SELECT * FROM `order` WHERE client_id=? AND confirmed=0";
-    private $updateConfirmOrder = "UPDATE `order` SET confirmed=1 WHERE id=?";
-    private $addOrder = "INSERT INTO `order` (client_id, confirmed) VALUES (?,0)";
+    private $getOrderIdWithClientID = "SELECT id FROM pedido WHERE cliente_id=? AND fechaConfirmacion IS NULL";
+    private $getOrderWithId = "SELECT * FROM pedido WHERE id=?";
+    private $getOrderWithClientId = "SELECT * FROM pedido WHERE cliente_id=? AND fechaConfirmacion IS NULL";
+    private $updateConfirmOrder = "UPDATE pedido SET fechaConfirmacion=?, direccionEnvio=? WHERE id=?";
+    private $addOrder = "INSERT INTO pedido (cliente_id, direccionEnvio, fechaConfirmacion) VALUES (?,?,?)";
 
 
     public function __construct()
@@ -28,8 +28,9 @@ class OrderDAO
         $rs = $select->fetch();
         return new Order(
             $rs['id'],
-            $clientId,
-            $rs['confirmed']
+            $rs['cliente_id'],
+            $rs['direccionEnvio'],
+            $rs['fechaConfirmacion']
         );
     }
 
@@ -39,16 +40,19 @@ class OrderDAO
         $select->execute([$orderId]);
         $rs = $select->fetch();
         return new Order(
-            $orderId,
-            $rs['client_id'],
-            $rs['confirmed']
+            $rs['id'],
+            $rs['cliente_id'],
+            $rs['direccionEnvio'],
+            $rs['fechaConfirmacion']
         );
     }
 
-    public function updateConfirmOrder($orderId)
+    public function updateConfirmOrder(Order $order): void
     {
         $this->pdo->prepare($this->updateConfirmOrder)->execute([
-            $orderId
+            $order->getConfirmedDate(),
+            $order->getShippingAdress(),
+            $order->getId()
         ]);
         return;
     }
@@ -56,10 +60,11 @@ class OrderDAO
     public function createOrderOfClient($clientId): Order
     {
         $this->pdo->prepare($this->addOrder)->execute([
-            $clientId
+            $clientId,
+            null,
+            null
         ]);
 
         return $this->getOrderWithClientId($clientId);
-
     }
 }

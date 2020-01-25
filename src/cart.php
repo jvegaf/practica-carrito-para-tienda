@@ -11,7 +11,7 @@ if (isset($_REQUEST['add_to_cart'])) {
 }
 
 if (isset($_REQUEST['remove'])) {
-    $mainController->removeItemFromSimpleCart($_REQUEST['remove']);
+    $mainController->removeItemInCart($_REQUEST['remove']);
 }
 
 $shopItems = $mainController->getAllShopItems();

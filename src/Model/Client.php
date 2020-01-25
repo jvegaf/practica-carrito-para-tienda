@@ -7,35 +7,35 @@ namespace ShoppingCart\Model;
 class Client
 {
     private $id;
-    private $password;
-    private $name;
-    private $surnameFirst;
-    private $surnameLast;
     private $email;
-    private $ci;
+    private $password;
+    private $cookieCode;
+    private $name;
     private $address;
+    private $phone;
+    private $enrolled;
 
     /**
      * Client constructor.
      * @param $id
-     * @param $password
-     * @param $name
-     * @param $surnameFirst
-     * @param $surnameLast
      * @param $email
-     * @param $ci
+     * @param $password
+     * @param $cookieCode
+     * @param $name
      * @param $address
+     * @param $phone
+     * @param $enrolled
      */
-    public function __construct($id, $password, $name, $surnameFirst, $surnameLast, $email, $ci, $address)
+    public function __construct($id, $email, $password, $cookieCode, $name, $address, $phone, $enrolled)
     {
         $this->id = $id;
-        $this->password = $password;
-        $this->name = $name;
-        $this->surnameFirst = $surnameFirst;
-        $this->surnameLast = $surnameLast;
         $this->email = $email;
-        $this->ci = $ci;
+        $this->password = $password;
+        $this->cookieCode = $cookieCode;
+        $this->name = $name;
         $this->address = $address;
+        $this->phone = $phone;
+        $this->enrolled = $enrolled;
     }
 
     /**
@@ -57,6 +57,22 @@ class Client
     /**
      * @return mixed
      */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getPassword()
     {
         return $this->password;
@@ -68,6 +84,22 @@ class Client
     public function setPassword($password): void
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCookieCode()
+    {
+        return $this->cookieCode;
+    }
+
+    /**
+     * @param mixed $cookieCode
+     */
+    public function setCookieCode($cookieCode): void
+    {
+        $this->cookieCode = $cookieCode;
     }
 
     /**
@@ -89,70 +121,6 @@ class Client
     /**
      * @return mixed
      */
-    public function getSurnameFirst()
-    {
-        return $this->surnameFirst;
-    }
-
-    /**
-     * @param mixed $surnameFirst
-     */
-    public function setSurnameFirst($surnameFirst): void
-    {
-        $this->surnameFirst = $surnameFirst;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSurnameLast()
-    {
-        return $this->surnameLast;
-    }
-
-    /**
-     * @param mixed $surnameLast
-     */
-    public function setSurnameLast($surnameLast): void
-    {
-        $this->surnameLast = $surnameLast;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCi()
-    {
-        return $this->ci;
-    }
-
-    /**
-     * @param mixed $ci
-     */
-    public function setCi($ci): void
-    {
-        $this->ci = $ci;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getAddress()
     {
         return $this->address;
@@ -164,5 +132,37 @@ class Client
     public function setAddress($address): void
     {
         $this->address = $address;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnrolled()
+    {
+        return $this->enrolled;
+    }
+
+    /**
+     * @param mixed $enrolled
+     */
+    public function setEnrolled($enrolled): void
+    {
+        $this->enrolled = $enrolled;
     }
 }

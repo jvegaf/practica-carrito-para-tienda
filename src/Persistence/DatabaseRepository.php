@@ -14,7 +14,7 @@ class DatabaseRepository
         $server = "mysql-shop";
         $username = "root";
         $passwd = "root";
-        $bd = "shop_db"; // Schema
+        $bd = "tienda"; // Schema
         $options = [
             PDO::ATTR_EMULATE_PREPARES => false, // Modo emulación desactivado para prepared statements "reales"
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Que los errores salgan como excepciones.

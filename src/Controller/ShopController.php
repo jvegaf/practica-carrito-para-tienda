@@ -32,4 +32,8 @@ class ShopController
         return $this->itemsDao->getAll();
     }
 
+    public function getItem($id){
+        return $this->itemsDao->getItemWithId($id);
+    }
+
 }

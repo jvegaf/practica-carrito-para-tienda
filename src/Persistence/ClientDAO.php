@@ -9,9 +9,14 @@ use ShoppingCart\Model\Client;
 class ClientDAO
 {
     private $pdo;
-    private $getClientWithId = "SELECT * FROM client WHERE id=?";
-    private $getAllClients = "SELECT * FROM client";
-    private $getClientWithEmail = "SELECT * FROM client WHERE email=?";
+    private $getClientWithId = "SELECT * FROM cliente WHERE id=?";
+    private $getAllClients = "SELECT * FROM cliente";
+    private $getClientWithEmail = "SELECT * FROM cliente WHERE email=?";
+    private $getEmail = "SELECT `email` FROM cliente WHERE email=?";
+    private $insertClient = "INSERT INTO cliente (email, contrasenna, nombre, direccion, telefono, registrado) VALUES (?,?,?,?,?,?)";
+    private $getWithToken = "SELECT * FROM cliente WHERE codigoCookie=?";
+    private $updateToken = "UPDATE cliente SET codigoCookie=? WHERE id=?";
+
 
     public function __construct()
     {
@@ -74,5 +79,47 @@ class ClientDAO
         return $clients;
     }
 
+    public function checkUserEmail($email)
+    {
+        $select = $this->pdo->prepare($this->getEmail);
+        $select->execute([$email]);
+        return $select->fetch();
+    }
 
+    public function insertClient($email, $pass, $name, $addr, $phone, bool $enrolled)
+    {
+        $this->pdo->prepare($this->insertClient)
+            ->execute([
+                $email,
+                $pass,
+                $name,
+                $addr,
+                $phone,
+                $enrolled
+            ]);
+        return;
+    }
+
+    public function getClientWithToken($token): Client
+    {
+        $select = $this->pdo->prepare($this->getWithToken);
+        $select->execute([$token]);
+        $rs = $select->fetch();
+        return new Client(
+            $rs['id'],
+            $rs['email'],
+            $rs['contrasenna'],
+            $rs['codigoCookie'],
+            $rs['nombre'],
+            $rs['direccion'],
+            $rs['telefono'],
+            $rs['registrado']
+        );
+    }
+
+    public function updateClientToken($clientId, $token)
+    {
+        $select = $this->pdo->prepare($this->updateToken)
+            ->execute([$token, $clientId]);
+    }
 }
