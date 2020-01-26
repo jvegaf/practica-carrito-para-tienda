@@ -47,12 +47,14 @@ class OrderDAO
         );
     }
 
-    public function updateConfirmOrder(Order $order): void
+    public function confirmOrder($orderId, $address): void
     {
+        $now = date("YmdHi");
+
         $this->pdo->prepare($this->updateConfirmOrder)->execute([
-            $order->getConfirmedDate(),
-            $order->getShippingAdress(),
-            $order->getId()
+            $now,
+            $address,
+            $orderId
         ]);
         return;
     }

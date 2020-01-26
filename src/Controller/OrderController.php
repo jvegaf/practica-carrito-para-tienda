@@ -14,7 +14,7 @@ class OrderController
 
     private $oDao;
     private $olDao;
-    private $cart;
+
 
     public function __construct()
     {
@@ -23,19 +23,13 @@ class OrderController
         $this->olDao = new OrderLineDAO();
     }
 
-    public function getOrderOfClient($clientId): Order
+    public function getOrderId($clientId)
     {
-        if ($clientId == null) {
-            return new Order(null, null, 0);
-        }
         $order = $this->oDao->getOrderWithClientId($clientId);
         if ($order->getId() == null) {
             $order = $this->createOrderOfClient($clientId);
-            $order->setId($order->getId());
-            $order->setClientId($clientId);
-            return $order;
         }
-        return $order;
+        $_SESSION['orderId'] = $order->getId();
     }
 
     private function createOrderOfClient($clientId): Order
@@ -43,37 +37,74 @@ class OrderController
         return $this->oDao->createOrderOfClient($clientId);
     }
 
-    public function addNewItemToOrder($item): void
+    public function addNewItem($itemId): void
     {
         if (isset($_SESSION['orderId'])) {
-            $this->cart = $this->olDao->getGetLinesOfOrderId($_SESSION['orderId']);
-            foreach ($this->cart as $oLine) {
-                if ($oLine['itemId'] == $item['itemId']) {
-                    $oLine['quantity']+= $item['quantity'];
+            $cart = $this->olDao->getGetLinesOfOrderId($_SESSION['orderId']);
+            foreach ($cart as $oLine) {
+                if ($oLine['itemId'] == $itemId) {
+                    $oLine['quantity']++;
                     $this->olDao->updateOrderLine($oLine);
+                    $this->updateCart();
                     return;
                 }
             }
             $this->olDao->insertOrderLine(
                 [
                     'orderId' => $_SESSION['orderId'],
-                    'itemId' => $item['itemId'],
+                    'itemId' => $itemId,
                     'quantity' => 1,
                     'price' => null
                 ]
             );
+            $this->updateCart();
+            return;
         }
-        array_push($_SESSION['cart'], $item);
+
+        foreach ($_SESSION['cart'] as $item) {
+            if ($item['itemId'] == $itemId) {
+                $item['quantity']++;
+                return;
+            }
+        }
+
+        array_push($_SESSION['cart'], [
+            "itemId" => $itemId,
+            "orderId" => null,
+            "quantity" => 1
+        ]);
         return;
     }
 
     public function updateOrderLine($oLine): void
     {
-        // TODO
+        if (isset($_SESSION['orderId'])){
+            $this->olDao->updateOrderLine($oLine);
+        }
+
+        foreach ($_SESSION['cart'] as $item) {
+            if ($item['itemId'] == $oLine['itemId']) {
+                $item['quantity']+=$oLine['quantity'];
+                return;
+            }
+        }
+    }
+
+    public function confirmOrder($address): void
+    {
+        if (isset($_SESSION['orderId'])){
+            $this->oDao->confirmOrder($_SESSION['orderId'], $address);
+        }
     }
 
     public function getOrderLinesOfOrder($orderId)
     {
         return $this->olDao->getGetLinesOfOrderId($orderId);
+    }
+
+    public function updateCart(): void
+    {
+        $_SESSION['cart'] = $this->getOrderLinesOfOrder($_SESSION['orderId']);
+        return;
     }
 }

@@ -1,10 +1,14 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 use ShoppingCart\Controller\MainController;
-
+session_start();
 $mainController = new MainController();
 
-
+if (!isset($_SESSION['sesion-started'])){
+    if (isset($_COOKIE['token'])){
+        $mainController->checkClientToken($_COOKIE['token']);
+    }
+}
 
 if (isset($_REQUEST['add_to_cart'])){
   $mainController->addItemToCart($_REQUEST['item']);
@@ -34,7 +38,7 @@ if ($mainController->isClientLogged()){
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>VapeStore</title>
+  <title>Store</title>
   <link rel="stylesheet" href="css/style.css">
   <!--Bootstrap-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -58,13 +62,13 @@ if ($mainController->isClientLogged()){
         <?php foreach ($shopItems as $item) { ?>
           <div class="col-lg-3 col-sm-12 mb-3">
             <div class="card">
-              <img src="<?= $item->getImgSrc()?>" class="card-img-top" alt="...">
+              <img src="<?= $mainController->getImgSrc($item['itemId'])?>" class="card-img-top" height="253" width="auto" alt="...">
               <div class="card-body">
-                <h5 class="card-title" style="height: 80px"><?= $item->getName()?></h5>
-<!--                <p class="card-text">--><?//= $item->getDescription()?><!--</p>-->
+                <h5 class="card-title font-weight-bold"><?= $item['itemName']?></h5>
+                <p class="card-text price-text"><?= $item['itemPrice']?> €</p>
                 <form action="main.php" method="get">
                   <input type="hidden" name="add_to_cart" value="true">
-                  <input type="hidden" name="item" value="<?= $item->getId()?>">
+                  <input type="hidden" name="item" value="<?= $item['itemId']?>">
                   <button type="submit" class="btn btn-info col-12">Comprar</button>
                 </form>
               </div>

@@ -4,7 +4,6 @@
 namespace ShoppingCart\Controller;
 
 use ShoppingCart\Model\Client;
-use ShoppingCart\Model\Item;
 use ShoppingCart\Persistence\ItemDAO;
 
 class MainController
@@ -13,8 +12,6 @@ class MainController
     private $clientC;
     private $orderC;
     private $shopC;
-    private $client;
-    private $order;
 
     public function __construct()
     {
@@ -22,14 +19,9 @@ class MainController
         $this->clientC = new ClientController();
         $this->orderC = new OrderController();
         $this->shopC = new ShopController();
-
-        // revisar
         if (isset($_SESSION['clientId'])) {
-            $this->client = $this->clientC->getClient($_SESSION['clientId']);
-            $this->order = $this->orderC->getOrderOfClient($this->client->getId());
-            // TODO: traer carro
+            $this->orderC->getOrderId($_SESSION['clientId']);
         } else {
-            $this->order = $this->orderC->getOrderOfClient(null);
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = array();
             }
@@ -38,73 +30,60 @@ class MainController
 
     public function addItemToCart($itemId)
     {
-        foreach ($_SESSION['cart'] as $item) {
-            if ($item['itemId'] == $itemId) {
-                $item['quantity']++;
-                $_SESSION['cart'] = $_SESSION['cart'];
-                exit();
-            }
-        }
-        array_push($_SESSION['cart'], [
-            "itemId" => $itemId,
-            "orderId" => $this->order->getId(),
-            "quantity" => 1
-        ]);
-        $_SESSION['cart'] = $_SESSION['cart'];
-        if ($this->isClientLogged()) {
-            $this->orderC->addNewItemToOrder($itemId, $this->order->getId());
-        }
+        $this->orderC->addNewItem($itemId);
     }
 
     public function checkClientToken($token)
     {
-        $client = $this->clientC->getClientWithToken($token);
-        if ($client) {
-            $this->client = $client;
-            $_SESSION['sesion-started'] = true;
-            $_SESSION['clientId'] = $this->client->getId();
-            $_SESSION['orderId'] = $this->orderC->getOrderOfClient($this->client->getId())->getId();
-            $oLines = $this->orderC->getOrderLinesOfOrder($this->order->getId());
+        $result = $this->clientC->checkClientToken($token);
+        if ($result){
+            $this->orderC->getOrderId($_SESSION['clientId']);
+            $oLines = $this->orderC->getOrderLinesOfOrder($_SESSION['orderId']);
             foreach ($oLines as $item) {
                 array_push($_SESSION['cart'], $item);
             }
         }
+        header("Location: main.php");
     }
 
-    public function loginClient($email, $passwd)
+    public function loginClient($email, $pass, $remember)
     {
-        $resClient = $this->clientC->login($email, $passwd);
-        if ($resClient == null) {
+        $result = $this->clientC->login($email, $pass, $remember);
+        if ($result == false) {
             header('Location: login.php?error=true');
             exit();
         }
-        $this->client = $resClient;
-        $_SESSION['orderId'] = $this->orderC->getOrderOfClient($this->client->getId())->getId();
-        $_SESSION['sesion-started'] = true;
-        $_SESSION['clientId'] = $this->client->getId();
-        if (!isEmpty($_SESSION['cart'])) { // si la cesta no esta vacia
-            foreach ($_SESSION['cart'] as $item){
-                $this->orderC->addNewItemToOrder($item);
+
+        $this->orderC->getOrderId($_SESSION['clientId']);
+        if (isset($_SESSION['cart'])){
+            if ( count($_SESSION['cart']) > 0) {
+                foreach ($_SESSION['cart'] as $item){
+                    $this->orderC->addNewItem($item['itemId']);
+                }
             }
         }
+        $this->orderC->updateCart();
         header('Location: main.php');
         exit();
     }
 
     public function isClientLogged(): bool
     {
-        if ($this->client == null) {
-            return false;
+        if (isset($_SESSION['sesion-started'])) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     public function getClientName(): string
     {
-        if ($this->client == null) {
-            return "";
+        if(isset($_SESSION['sesion-started'])){
+            $name = $this->clientC->getFullName($_SESSION['clientId']);
+            if ($name != null){
+                return $name;
+            }
         }
-        return $this->client->getName() . " " . $this->client->getSurnameFirst();
+        return "";
     }
 
     public function getAllShopItems(): array
@@ -114,7 +93,11 @@ class MainController
 
     public function getCartItemsAmount(): int
     {
-        return count($_SESSION['cart']);
+        $counter = 0;
+        foreach ($_SESSION['cart'] as $item){
+            $counter+= $item['quantity'];
+        }
+        return $counter;
     }
 
     public function getCartItems(): array
@@ -122,7 +105,7 @@ class MainController
         return $_SESSION['cart'];
     }
 
-    public function getItemFromShop($itemId): Item
+    public function getItemFromShop($itemId)
     {
         return $this->shopC->getItem($itemId);
     }
@@ -135,6 +118,11 @@ class MainController
             }
         }
         return;
+    }
+
+    public function getImgSrc($itemId): string
+    {
+        return $this->shopC->getImgSrc($itemId);
     }
 
 }

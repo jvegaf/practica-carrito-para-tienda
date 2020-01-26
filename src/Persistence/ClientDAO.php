@@ -29,14 +29,14 @@ class ClientDAO
         $select->execute([$id]);
         $rs = $select->fetch();
         return new Client(
-            $id,
-            $rs['password'],
-            $rs['name'],
-            $rs['surname_first'],
-            $rs['surname_last'],
+            $rs['id'],
             $rs['email'],
-            $rs['ci'],
-            $rs['address']
+            $rs['contrasenna'],
+            $rs['codigoCookie'],
+            $rs['nombre'],
+            $rs['direccion'],
+            $rs['telefono'],
+            $rs['registrado']
         );
     }
 
@@ -47,13 +47,13 @@ class ClientDAO
         $rs = $select->fetch();
         return new Client(
             $rs['id'],
-            $rs['password'],
-            $rs['name'],
-            $rs['surname_first'],
-            $rs['surname_last'],
-            $email,
-            $rs['ci'],
-            $rs['address']
+            $rs['email'],
+            $rs['contrasenna'],
+            $rs['codigoCookie'],
+            $rs['nombre'],
+            $rs['direccion'],
+            $rs['telefono'],
+            $rs['registrado']
         );
     }
 
@@ -119,7 +119,14 @@ class ClientDAO
 
     public function updateClientToken($clientId, $token)
     {
-        $select = $this->pdo->prepare($this->updateToken)
+        $this->pdo->prepare($this->updateToken)
             ->execute([$token, $clientId]);
     }
+
+    public function deleteToken($clientId)
+    {
+        $this->pdo->prepare($this->updateToken)
+            ->execute([null, $clientId]);
+    }
+
 }

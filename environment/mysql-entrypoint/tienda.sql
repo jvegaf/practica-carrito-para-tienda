@@ -53,7 +53,7 @@ TRUNCATE TABLE `cliente`;
 --
 
 INSERT INTO `cliente` (`id`, `email`, `contrasenna`, `codigoCookie`, `nombre`, `direccion`, `telefono`, `registrado`) VALUES
-(1, 'jlopez@gmail.com', 'j', 'J4PTyau8zvK1EfrwLANAn7dT81tWRtyl', 'José', NULL, NULL, 0),
+(1, 'jlopez@gmail.com', 'j', NULL, 'José Lopez', 'Av. vascongadas 2 1B', '123456789', 1),
 (2, 'mgarcia@gmail.com', 'm', NULL, 'María', NULL, NULL, 0),
 (3, 'jfernandez@gmail.com', '1234', 'MPkkCyPr5filHF0VuWilH4v7J6zJuupy', 'Juanito', NULL, NULL, 0);
 

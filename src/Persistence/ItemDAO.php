@@ -4,13 +4,12 @@
 namespace ShoppingCart\Persistence;
 
 
-use ShoppingCart\Model\Item;
 
 class ItemDAO
 {
     private $pdo;
-    private $getItemWithId = "SELECT * FROM item WHERE id=?";
-    private $getAllItems = "SELECT * FROM item";
+    private $getItemWithId = "SELECT * FROM producto WHERE id=?";
+    private $getAllItems = "SELECT * FROM producto";
 
 
 
@@ -19,17 +18,17 @@ class ItemDAO
         $this->pdo = DatabaseRepository::getConnection();
     }
 
-    public function getItemWithId($id): Item
+    public function getItemWithId($id)
     {
         $select = $this->pdo->prepare($this->getItemWithId);
         $select->execute([$id]);
         $rs = $select->fetch();
-        return new Item(
-            $id,
-            $rs['name'],
-            $rs['description'],
-            $rs['price']
-        );
+        return [
+            "itemId" => $rs['id'],
+            "itemName" => $rs['nombre'],
+            "itemDesc" => $rs['descripcion'],
+            "itemPrice" => $rs['precio']
+        ];
     }
 
     public function getAll(): array
@@ -39,13 +38,12 @@ class ItemDAO
         $select->execute();
         $rs = $select->fetchAll();
         foreach ($rs as $row){
-            $item = new Item(
-                $row['id'],
-                $row['name'],
-                $row['description'],
-                $row['price']
-            );
-            array_push($items, $item);
+            array_push($items, [
+                "itemId" => $row['id'],
+                "itemName" => $row['nombre'],
+                "itemDesc" => $row['descripcion'],
+                "itemPrice" => $row['precio']
+            ]);
         }
         return $items;
     }

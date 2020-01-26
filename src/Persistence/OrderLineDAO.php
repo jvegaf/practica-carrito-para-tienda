@@ -4,8 +4,6 @@
 namespace ShoppingCart\Persistence;
 
 
-use ShoppingCart\Model\OrderLine;
-
 class OrderLineDAO
 {
     private $pdo;
@@ -51,10 +49,10 @@ class OrderLineDAO
 
     public function updateOrderLine($oLine){
         $this->pdo->prepare($this->updateOrderLine)->execute([
-            $oLine['orderId'],
-            $oLine['itemId'],
             $oLine['quantity'],
-            $oLine['price']
+            null,
+            $oLine['orderId'],
+            $oLine['itemId']
         ]);
         return;
     }

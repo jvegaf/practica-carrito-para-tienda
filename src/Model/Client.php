@@ -9,7 +9,7 @@ class Client
     private $id;
     private $email;
     private $password;
-    private $cookieCode;
+    private $token;
     private $name;
     private $address;
     private $phone;
@@ -20,18 +20,18 @@ class Client
      * @param $id
      * @param $email
      * @param $password
-     * @param $cookieCode
+     * @param $token
      * @param $name
      * @param $address
      * @param $phone
      * @param $enrolled
      */
-    public function __construct($id, $email, $password, $cookieCode, $name, $address, $phone, $enrolled)
+    public function __construct($id, $email, $password, $token, $name, $address, $phone, $enrolled)
     {
         $this->id = $id;
         $this->email = $email;
         $this->password = $password;
-        $this->cookieCode = $cookieCode;
+        $this->token = $token;
         $this->name = $name;
         $this->address = $address;
         $this->phone = $phone;
@@ -89,17 +89,17 @@ class Client
     /**
      * @return mixed
      */
-    public function getCookieCode()
+    public function getToken()
     {
-        return $this->cookieCode;
+        return $this->token;
     }
 
     /**
-     * @param mixed $cookieCode
+     * @param mixed $token
      */
-    public function setCookieCode($cookieCode): void
+    public function setToken($token): void
     {
-        $this->cookieCode = $cookieCode;
+        $this->token = $token;
     }
 
     /**

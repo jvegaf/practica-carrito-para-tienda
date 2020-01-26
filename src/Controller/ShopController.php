@@ -36,4 +36,8 @@ class ShopController
         return $this->itemsDao->getItemWithId($id);
     }
 
+    public function getImgSrc($itemId): string
+    {
+        return "/items-img/" . $itemId . ".jpg";
+    }
 }
