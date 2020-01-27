@@ -4,7 +4,7 @@
 namespace ShoppingCart\Persistence;
 
 
-use ShoppingCart\Model\Client;
+use ShoppingCart\Models\Client;
 
 class ClientDAO
 {

@@ -1,11 +1,12 @@
 <?php
 
 
-namespace ShoppingCart\Controller;
+namespace ShoppingCart\Controllers;
 
 
-use ShoppingCart\Model\Client;
+use ShoppingCart\Models\Client;
 use ShoppingCart\Persistence\ClientDAO;
+use ShoppingCart\Services\Client\RegisterNewClientUseCase;
 
 class ClientController
 {
@@ -42,21 +43,18 @@ class ClientController
 
     public function registerNewClient($email, $pass, $name, $addr, $phone): void
     {
-        $this->cDao->insertClient(
+        (new RegisterNewClientUseCase($this->cDao))->execute(
             $email,
             $pass,
             $name,
             $addr,
-            $phone,
-            true
+            $phone
         );
-        return;
     }
 
     public function getFullName($clientId)
     {
         return $this->getClient($clientId)->getName();
-
     }
 
     public function checkEmail($email)
