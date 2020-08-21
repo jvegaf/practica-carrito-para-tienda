@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use ShoppingCart\Controller\MainController;
+use ShoppingCart\Controllers\MainController;
 
 $mainController = new MainController();
 

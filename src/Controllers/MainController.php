@@ -1,9 +1,9 @@
 <?php
 
 
-namespace ShoppingCart\Controller;
+namespace ShoppingCart\Controllers;
 
-use ShoppingCart\Model\Client;
+use ShoppingCart\Models\Client;
 use ShoppingCart\Persistence\ItemDAO;
 
 class MainController

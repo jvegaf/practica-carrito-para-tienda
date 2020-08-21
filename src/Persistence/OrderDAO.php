@@ -4,7 +4,7 @@
 namespace ShoppingCart\Persistence;
 
 
-use ShoppingCart\Model\Order;
+use ShoppingCart\Models\Order;
 
 class OrderDAO
 {
