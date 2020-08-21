@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ShoppingCart\Persistence;
+namespace ShoppingCart\Infrastructure\Persistence;
 
 
 class OrderLineDAO

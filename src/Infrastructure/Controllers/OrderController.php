@@ -1,12 +1,12 @@
 <?php
 
 
-namespace ShoppingCart\Controllers;
+namespace ShoppingCart\Infrastructure\Controllers;
 
 
-use ShoppingCart\Models\Order;
-use ShoppingCart\Persistence\OrderDAO;
-use ShoppingCart\Persistence\OrderLineDAO;
+use ShoppingCart\Domain\Entities\Order;
+use ShoppingCart\Infrastructure\Persistence\OrderDAO;
+use ShoppingCart\Infrastructure\Persistence\OrderLineDAO;
 
 class OrderController
 {

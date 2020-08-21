@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ShoppingCart\Persistence;
+namespace ShoppingCart\Infrastructure\Persistence;
 use Exception;
 use PDO;
 

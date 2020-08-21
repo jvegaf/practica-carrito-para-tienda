@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-use ShoppingCart\Controllers\MainController;
+use ShoppingCart\Infrastructure\Controllers\MainController;
 session_start();
 $mainController = new MainController();
 

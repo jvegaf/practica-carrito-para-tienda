@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ShoppingCart\Models;
+namespace ShoppingCart\Domain\Entities;
 
 
 class Order

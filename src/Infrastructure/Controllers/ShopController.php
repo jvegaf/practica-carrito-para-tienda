@@ -1,10 +1,8 @@
 <?php
 
 
-namespace ShoppingCart\Controllers;
+namespace ShoppingCart\Infrastructure\Controllers;
 
-
-use ShoppingCart\Persistence\ItemDAO;
 
 class ShopController
 {
