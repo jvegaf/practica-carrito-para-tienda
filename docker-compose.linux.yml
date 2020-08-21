@@ -22,8 +22,7 @@ services:
     build:
       context: ./
     environment:
-      XDEBUG_CONFIG: remote_host=host.docker.internal #descomentar si usas windows o mac
-      #XDEBUG_CONFIG: remote_host=<hostname> #descomentar si usas linux y ponerle el nombre de tu maquina
+      XDEBUG_CONFIG: remote_host=darkArmy
       PHP_IDE_CONFIG: serverName=Docker
     volumes:
       - .:/var/www/html
