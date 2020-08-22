@@ -121,9 +121,9 @@ class MainController
         return;
     }
 
-    public function getImgSrc($itemId): string
+    public function getImg($itemId): string
     {
-        return $this->shopC->getImgSrc($itemId);
+        return $this->shopC->getImg($itemId);
     }
 
 }

@@ -26,6 +26,8 @@ services:
       #XDEBUG_CONFIG: remote_host=<hostname> #descomentar si usas linux y ponerle el nombre de tu maquina
       PHP_IDE_CONFIG: serverName=Docker
     volumes:
+      - ./environment/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./environment/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
       - .:/var/www/html
     ports:
       - 8800:80

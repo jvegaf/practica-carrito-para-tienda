@@ -30,5 +30,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer
 
+
 VOLUME ["/var/www/html"]
 WORKDIR /var/www/html
