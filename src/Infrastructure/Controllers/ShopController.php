@@ -1,10 +1,11 @@
 <?php
 
 
-namespace ShoppingCart\Controllers;
+namespace ShoppingCart\Infrastructure\Controllers;
 
 
-use ShoppingCart\Persistence\ItemDAO;
+use ShoppingCart\Application\UseCases\Item\GetItemImage;
+use ShoppingCart\Infrastructure\Persistence\ItemDAO;
 
 class ShopController
 {
@@ -36,8 +37,9 @@ class ShopController
         return $this->itemsDao->getItemWithId($id);
     }
 
-    public function getImgSrc($itemId): string
+    public function getImg($itemId): string
     {
-        return "/items-img/" . $itemId . ".jpg";
+        $getImgUseCase = new GetItemImage($itemId);
+        return $getImgUseCase->execute();
     }
 }

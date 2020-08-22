@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-use ShoppingCart\Controllers\MainController;
+use ShoppingCart\Infrastructure\Controllers\MainController;
 session_start();
 $mainController = new MainController();
 
@@ -55,14 +55,14 @@ if ($mainController->isClientLogged()){
   <!--Bootstrap End-->
 </head>
 <body>
-  <?php include ("Templates/header.php");?>
+  <?php include ("../src/Infrastructure/Templates/header.php");?>
   <div class="container">
     <main>
       <div class="row">
         <?php foreach ($shopItems as $item) { ?>
           <div class="col-lg-3 col-sm-12 mb-3">
             <div class="card">
-              <img src="<?= $mainController->getImgSrc($item['itemId'])?>" class="card-img-top" height="253" width="auto" alt="...">
+              <img src="<?= $mainController->getImg($item['itemId'])?>" class="card-img-top" height="253" width="auto" alt="...">
               <div class="card-body">
                 <h5 class="card-title font-weight-bold"><?= $item['itemName']?></h5>
                 <p class="card-text price-text"><?= $item['itemPrice']?> €</p>

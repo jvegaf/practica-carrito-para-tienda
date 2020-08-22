@@ -23,12 +23,13 @@ RUN echo 'xdebug.remote_host=host.docker.internal' >> /usr/local/etc/php/php.ini
 RUN echo 'xdebug.remote_enable=1' >> /usr/local/etc/php/php.ini
 RUN echo 'xdebug.remote_port=9005' >> /usr/local/etc/php/php.ini
 
-RUN sed -i -e 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/src/g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i -e 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/public/g' /etc/apache2/sites-available/000-default.conf
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer
+
 
 VOLUME ["/var/www/html"]
 WORKDIR /var/www/html

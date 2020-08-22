@@ -1,10 +1,10 @@
 <?php
 
 
-namespace ShoppingCart\Persistence;
+namespace ShoppingCart\Infrastructure\Persistence;
 
 
-use ShoppingCart\Models\Order;
+use ShoppingCart\Domain\Entities\Order;
 
 class OrderDAO
 {

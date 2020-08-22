@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use ShoppingCart\Controllers\MainController;
+use ShoppingCart\Infrastructure\Controllers\MainController;
 
 $mainController = new MainController();
 
@@ -16,7 +16,7 @@ $cartItemsAmount = $mainController->getCartItemsAmount();
 $items = $mainController->getCartItems();
 $subTotal = 0;
 
-$cartIcon = "<a href=\"cart.php\" class='mr-4'><span class=\"h6 mr-3 text-white\">" . $cartItemsAmount . "</span><img src=\"img/cart.png\" alt=\"Cart\" width=\"20\" height=\"18\"></a>";
+$cartIcon = ">" . $cartItemsAmount . "></a>";
 $nameCl = $mainController->getClientName();
 $clientName = "<span class='navbar-text mr-sm-4'>" . $mainController->getClientName() . "</span>";
 

@@ -1,10 +1,11 @@
 <?php
 
 
-namespace ShoppingCart\Controllers;
+namespace ShoppingCart\Infrastructure\Controllers;
 
-use ShoppingCart\Models\Client;
-use ShoppingCart\Persistence\ItemDAO;
+use ShoppingCart\Infrastructure\Controllers\ClientController;
+use ShoppingCart\Infrastructure\Controllers\OrderController;
+use ShoppingCart\Infrastructure\Controllers\ShopController;
 
 class MainController
 {
@@ -120,9 +121,9 @@ class MainController
         return;
     }
 
-    public function getImgSrc($itemId): string
+    public function getImg($itemId): string
     {
-        return $this->shopC->getImgSrc($itemId);
+        return $this->shopC->getImg($itemId);
     }
 
 }

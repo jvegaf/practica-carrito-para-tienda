@@ -1,12 +1,12 @@
 <?php
 
 
-namespace ShoppingCart\Controllers;
+namespace ShoppingCart\Infrastructure\Controllers;
 
 
-use ShoppingCart\Models\Client;
-use ShoppingCart\Persistence\ClientDAO;
-use ShoppingCart\Services\Client\RegisterNewClientUseCase;
+use ShoppingCart\Application\UseCases\Client\RegisterNewClientUseCase;
+use ShoppingCart\Domain\Entities\Client;
+use ShoppingCart\Infrastructure\Persistence\ClientDAO;
 
 class ClientController
 {

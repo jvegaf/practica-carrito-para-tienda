@@ -1,9 +1,9 @@
 <?php
 
 
-namespace ShoppingCart\Services\Client;
+namespace ShoppingCart\Application\UseCases\Client;
 
-use ShoppingCart\Persistence\ClientDAO;
+use ShoppingCart\Infrastructure\Persistence\ClientDAO;
 
 class RegisterNewClientUseCase
 {

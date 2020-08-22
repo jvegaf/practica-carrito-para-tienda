@@ -12,8 +12,9 @@
   "optimize-autoloader": true
 },
   "require": {
-    "php": "^7.3",
-    "ext-pdo": "*"
+    "php": "^7.4",
+    "ext-pdo": "*",
+    "ext-gd": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^8"

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace ShoppingCart\Persistence;
+namespace ShoppingCart\Infrastructure\Persistence;
 
 
-use ShoppingCart\Models\Client;
+use ShoppingCart\Domain\Entities\Client;
 
 class ClientDAO
 {
