@@ -16,7 +16,7 @@ $cartItemsAmount = $mainController->getCartItemsAmount();
 $items = $mainController->getCartItems();
 $subTotal = 0;
 
-$cartIcon = ">" . $cartItemsAmount . "></a>";
+$cartIcon = ">" . $cartItemsAmount . "><img src=\"img/cart.png\" alt=\"Cart\" width=\"20\" height=\"18\"></a>";
 $nameCl = $mainController->getClientName();
 $clientName = "<span class='navbar-text mr-sm-4'>" . $mainController->getClientName() . "</span>";
 
@@ -51,7 +51,7 @@ if ($mainController->isClientLogged()) {
   <!--Bootstrap End-->
 </head>
 <body>
-<?php include("Templates/header.php"); ?>
+<?php include("../src/Infrastructure/Templates/header.php"); ?>
 <div class="container">
   <div class="w-75 mx-auto">
     <table class="table table-striped">
