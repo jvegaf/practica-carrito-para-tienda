@@ -33,14 +33,12 @@ USE `tienda`;
 
 DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE `cliente` (
-  `id` int(11) NOT NULL,
+  `id` varchar(36) NOT NULL,
   `email` varchar(60) COLLATE utf8_spanish_ci NOT NULL,
   `contrasenna` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
-  `codigoCookie` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `direccion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `telefono` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `registrado` tinyint(1) NOT NULL
+  `telefono` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -52,10 +50,10 @@ TRUNCATE TABLE `cliente`;
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`id`, `email`, `contrasenna`, `codigoCookie`, `nombre`, `direccion`, `telefono`, `registrado`) VALUES
-(1, 'jlopez@gmail.com', 'j', NULL, 'José Lopez', 'Av. vascongadas 2 1B', '123456789', 1),
-(2, 'mgarcia@gmail.com', 'm', NULL, 'María', NULL, NULL, 0),
-(3, 'jfernandez@gmail.com', '1234', 'MPkkCyPr5filHF0VuWilH4v7J6zJuupy', 'Juanito', NULL, NULL, 0);
+INSERT INTO `cliente` (`id`, `email`, `contrasenna`, `nombre`, `direccion`, `telefono`) VALUES
+('95d2b90a-1b60-4321-b5d5-16e18e1d0616', 'jlopez@gmail.com', 'j', 'José Lopez', 'Av. vascongadas 2 1B', '123456789'),
+('97269e70-2705-4a89-9346-5d384be9d232', 'mgarcia@gmail.com', 'm', 'María', NULL, NULL),
+('5d0254aa-c1a8-4b83-8c1e-54340e499268', 'jfernandez@gmail.com', '1234', 'Juanito', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -81,8 +79,8 @@ TRUNCATE TABLE `lineaPedido`;
 --
 
 INSERT INTO `lineaPedido` (`pedido_id`, `producto_id`, `unidades`, `precioUnitario`) VALUES
-(1, 1, 3, NULL),
-(1, 2, 1, NULL);
+('e2d9f777-9b80-4f24-9773-ba7e249dfa41', '4cfc2907-db21-419e-abe9-becceb124e31', 3, NULL),
+('e2d9f777-9b80-4f24-9773-ba7e249dfa41', '8f66a6d8-5d6a-41ca-a0b0-0955d1ad5852', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -92,8 +90,8 @@ INSERT INTO `lineaPedido` (`pedido_id`, `producto_id`, `unidades`, `precioUnitar
 
 DROP TABLE IF EXISTS `pedido`;
 CREATE TABLE `pedido` (
-  `id` int(11) NOT NULL,
-  `cliente_id` int(11) NOT NULL,
+  `id` varchar(36) NOT NULL,
+  `cliente_id` varchar(36) NOT NULL,
   `direccionEnvio` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `fechaConfirmacion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
@@ -108,7 +106,7 @@ TRUNCATE TABLE `pedido`;
 --
 
 INSERT INTO `pedido` (`id`, `cliente_id`, `direccionEnvio`, `fechaConfirmacion`) VALUES
-(1, 1, NULL, NULL);
+('e2d9f777-9b80-4f24-9773-ba7e249dfa41', '95d2b90a-1b60-4321-b5d5-16e18e1d0616', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -118,7 +116,7 @@ INSERT INTO `pedido` (`id`, `cliente_id`, `direccionEnvio`, `fechaConfirmacion`)
 
 DROP TABLE IF EXISTS `producto`;
 CREATE TABLE `producto` (
-  `id` int(11) NOT NULL,
+  `id` varchar(36) NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `descripcion` varchar(5000) COLLATE utf8_spanish_ci NOT NULL,
   `precio` decimal(10,2) NOT NULL
@@ -134,8 +132,8 @@ TRUNCATE TABLE `producto`;
 --
 
 INSERT INTO `producto` (`id`, `nombre`, `descripcion`, `precio`) VALUES
-(1, 'Cafetera', 'Modelo 5000, con doble filtro de partículas.', '9.87'),
-(2, 'Roomba', 'Suba y baja escaleras, último modelo.', '11.67');
+('4cfc2907-db21-419e-abe9-becceb124e31', 'Cafetera', 'Modelo 5000, con doble filtro de partículas.', '9.87'),
+('8f66a6d8-5d6a-41ca-a0b0-0955d1ad5852', 'Roomba', 'Suba y baja escaleras, último modelo.', '11.67');
 
 --
 -- Índices para tablas volcadas
@@ -166,27 +164,6 @@ ALTER TABLE `pedido`
 ALTER TABLE `producto`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `cliente`
---
-ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `pedido`
---
-ALTER TABLE `pedido`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `producto`
---
-ALTER TABLE `producto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas

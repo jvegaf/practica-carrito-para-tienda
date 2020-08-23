@@ -6,8 +6,8 @@ declare(strict_types=1);
 namespace ShoppingCart\Application\UseCases\Item;
 
 
-use ShoppingCart\Services\CanNotLoadImageException;
-use ShoppingCart\Services\ImageToBase64Encoder;
+use ShoppingCart\Services\ImageBase64\CanNotLoadImageException;
+use ShoppingCart\Services\ImageBase64\ImageToBase64Encoder;
 
 class GetItemImage
 {

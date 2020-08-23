@@ -4,7 +4,7 @@
 namespace ShoppingCart\Infrastructure\Persistence;
 
 
-use ShoppingCart\Domain\Entities\Client;
+use ShoppingCart\Domain\Entities\Client\Client;
 
 class ClientDAO
 {
@@ -32,11 +32,9 @@ class ClientDAO
             $rs['id'],
             $rs['email'],
             $rs['contrasenna'],
-            $rs['codigoCookie'],
             $rs['nombre'],
             $rs['direccion'],
             $rs['telefono'],
-            $rs['registrado']
         );
     }
 
@@ -49,11 +47,9 @@ class ClientDAO
             $rs['id'],
             $rs['email'],
             $rs['contrasenna'],
-            $rs['codigoCookie'],
             $rs['nombre'],
             $rs['direccion'],
-            $rs['telefono'],
-            $rs['registrado']
+            $rs['telefono']
         );
     }
 
@@ -65,14 +61,12 @@ class ClientDAO
         $rs = $select->fetchAll();
         foreach ($rs as $row) {
             $client = new Client(
-                $row['id'],
-                $row['password'],
-                $row['name'],
-                $row['surname_first'],
-                $row['surname_last'],
-                $row['email'],
-                $row['ci'],
-                $row['address']
+                $rs['id'],
+                $rs['email'],
+                $rs['contrasenna'],
+                $rs['nombre'],
+                $rs['direccion'],
+                $rs['telefono']
             );
             array_push($clients, $client);
         }
@@ -86,18 +80,18 @@ class ClientDAO
         return $select->fetch();
     }
 
-    public function insertClient($email, $pass, $name, $addr, $phone, bool $enrolled)
+    public function insertClient($email, $pass, $name, $addr, $phone)
     {
         $this->pdo->prepare($this->insertClient)
-            ->execute([
-                $email,
-                $pass,
-                $name,
-                $addr,
-                $phone,
-                $enrolled
-            ]);
-        return;
+            ->execute(
+                [
+                    $email,
+                    $pass,
+                    $name,
+                    $addr,
+                    $phone
+                ]
+            );
     }
 
     public function getClientWithToken($token): Client
@@ -109,11 +103,9 @@ class ClientDAO
             $rs['id'],
             $rs['email'],
             $rs['contrasenna'],
-            $rs['codigoCookie'],
             $rs['nombre'],
             $rs['direccion'],
             $rs['telefono'],
-            $rs['registrado']
         );
     }
 
