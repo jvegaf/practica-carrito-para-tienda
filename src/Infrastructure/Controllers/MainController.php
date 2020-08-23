@@ -125,5 +125,4 @@ class MainController
     {
         return $this->shopC->getImg($itemId);
     }
-
 }

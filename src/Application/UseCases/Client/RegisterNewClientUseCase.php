@@ -3,32 +3,25 @@
 
 namespace ShoppingCart\Application\UseCases\Client;
 
-use ShoppingCart\Infrastructure\Persistence\ClientDAO;
+use ShoppingCart\Application\Clients\Exceptions\ClientAlreadyExists;
+use ShoppingCart\Domain\Entities\Client\Client;
+use ShoppingCart\Domain\Entities\Client\ClientRepository;
 
 class RegisterNewClientUseCase
 {
-    private $cDao;
 
-    public function __construct(ClientDAO $clientDao)
+    private ClientRepository $clientRepository;
+
+    public function __construct(ClientRepository $clientRepository)
     {
-        $this->cDao = $clientDao;
+        $this->clientRepository = $clientRepository;
     }
 
-    public function execute(
-        $email,
-        $pass,
-        $name,
-        $addr,
-        $phone)
+    public function execute(Client $client): void
     {
-        $this->cDao->insertClient(
-            $email,
-            $pass,
-            $name,
-            $addr,
-            $phone,
-            true
-        );
+        if ($this->clientRepository->exists($client->getEmail()) === true) {
+            throw new ClientAlreadyExists();
+        }
+        $this->clientRepository->add($client);
     }
-
 }
