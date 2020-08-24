@@ -48,8 +48,13 @@ clean: ## Clean containers
 	U_ID=${UID} docker-compose down --rmi local --volumes --remove-orphans
 
 # Backend commands
+
+test: ## Execute test suite
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} phpunit --configuration phpunit.xml
+
 composer-install: ## Installs composer dependencies
 	U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_BE} composer install --no-scripts --no-interaction --optimize-autoloader
+
 
 ssh-be: ## ssh's into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash

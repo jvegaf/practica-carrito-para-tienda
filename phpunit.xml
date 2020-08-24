@@ -5,6 +5,7 @@
     <testsuites>
         <testsuite name="Unit">
             <directory>test/unit</directory>
+            <directory>test/unit/application/clients/usecases/register</directory>
         </testsuite>
     </testsuites>
 

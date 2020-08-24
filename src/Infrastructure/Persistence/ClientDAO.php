@@ -20,7 +20,7 @@ class ClientDAO
 
     public function __construct()
     {
-        $this->pdo = DatabaseRepository::getConnection();
+        $this->pdo = MySQLDatabase::getConnection();
     }
 
     public function getClientWithId($id)

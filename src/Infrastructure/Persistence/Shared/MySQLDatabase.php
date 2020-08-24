@@ -1,11 +1,11 @@
 <?php
 
 
-namespace ShoppingCart\Infrastructure\Persistence;
+namespace ShoppingCart\Infrastructure\Persistence\Shared;
 use Exception;
 use PDO;
 
-class DatabaseRepository
+class MySQLDatabase
 {
 
 

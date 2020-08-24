@@ -3,9 +3,9 @@
 
 namespace ShoppingCart\Application\UseCases\Client;
 
-use ShoppingCart\Application\Clients\Exceptions\ClientAlreadyExists;
 use ShoppingCart\Domain\Entities\Client\Client;
 use ShoppingCart\Domain\Entities\Client\ClientRepository;
+use ShoppingCart\Application\Clients\Exceptions\ClientAlreadyExists;
 
 class RegisterNewClientUseCase
 {
@@ -17,11 +17,17 @@ class RegisterNewClientUseCase
         $this->clientRepository = $clientRepository;
     }
 
-    public function execute(Client $client): void
+    /**
+     * @param Client $client
+     * @return bool
+     * @throws ClientAlreadyExists
+     */
+    public function execute(Client $client): bool
     {
-        if ($this->clientRepository->exists($client->getEmail()) === true) {
+        if ($this->clientRepository->exists($client->getEmail()) !== false) {
             throw new ClientAlreadyExists();
         }
         $this->clientRepository->add($client);
+        return true;
     }
 }
