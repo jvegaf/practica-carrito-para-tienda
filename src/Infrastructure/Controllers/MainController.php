@@ -1,11 +1,8 @@
 <?php
-
+declare(strict_types=1);
 
 namespace ShoppingCart\Infrastructure\Controllers;
 
-use ShoppingCart\Infrastructure\Controllers\ClientController;
-use ShoppingCart\Infrastructure\Controllers\OrderController;
-use ShoppingCart\Infrastructure\Controllers\ShopController;
 
 class MainController
 {
@@ -89,7 +86,7 @@ class MainController
 
     public function getAllShopItems(): array
     {
-        return $this->shopC->getItems();
+        return $this->shopC->getAllProducts();
     }
 
     public function getCartItemsAmount(): int
@@ -108,7 +105,7 @@ class MainController
 
     public function getItemFromShop($itemId)
     {
-        return $this->shopC->getItem($itemId);
+        return $this->shopC->getProduct($itemId);
     }
 
     public function removeItemInCart($itemId)

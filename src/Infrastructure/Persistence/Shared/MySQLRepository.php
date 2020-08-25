@@ -5,16 +5,22 @@ namespace ShoppingCart\Infrastructure\Persistence\Shared;
 use Exception;
 use PDO;
 
-class MySQLDatabase
+class MySQLRepository
 {
 
+    protected $pdo;
 
-    public static function getConnection()
+    public function __construct()
+    {
+        $this->pdo = $this->getConnection();
+    }
+
+    private function getConnection()
     {
         $server = "mysql-shop";
         $username = "root";
         $passwd = "root";
-        $bd = "tienda"; // Schema
+        $bd = "shop_db"; // Schema
         $options = [
             PDO::ATTR_EMULATE_PREPARES => false, // Modo emulación desactivado para prepared statements "reales"
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Que los errores salgan como excepciones.

@@ -4,11 +4,9 @@ namespace ShoppingCart\Domain\Entities\Client;
 
 interface ClientRepository
 {
-    public function exists(string $email): bool;
+    public function getWithId(string $id): ?Client;
 
-    public function getOfId(string $id): Client;
-
-    public function getOfEmail(string $email): Client;
+    public function getWithEmail(string $email): ?Client;
 
     public function getAll(): array;
 

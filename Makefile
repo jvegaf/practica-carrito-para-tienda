@@ -3,14 +3,6 @@
 OS := $(shell uname)
 DOCKER_BE = webserver
 
-ifeq ($(OS),Darwin)
-	UID = $(shell id -u)
-else ifeq ($(OS),Linux)
-	UID = $(shell id -u)
-else
-	UID = 1000
-endif
-
 help: ## Show this help message
 	@echo 'usage: make [target]'
 	@echo
@@ -19,14 +11,14 @@ help: ## Show this help message
 
 run: ## Start the containers
 ifeq ($(OS),Linux)
-	U_ID=${UID} docker-compose -f docker-compose.linux.yml up -d
+	docker-compose -f docker-compose.linux.yml up -d
 else
 	docker-compose -f docker-compose.yml up -d
 endif
 
 stop: ## Stop the containers
 ifeq ($(OS),Linux)
-	U_ID=${UID} docker-compose -f docker-compose.linux.yml stop
+	docker-compose -f docker-compose.linux.yml stop
 else
 	docker-compose -f docker-compose.yml stop
 endif
@@ -36,7 +28,7 @@ restart: ## Restart the containers
 
 build: ## Rebuilds all the containers
 ifeq ($(OS),Linux)
-	U_ID=${UID} docker-compose -f docker-compose.linux.yml build --compress --parallel
+	docker-compose -f docker-compose.linux.yml build --compress --parallel
 else
 	docker-compose -f docker-compose.yml build
 endif
@@ -45,19 +37,19 @@ prepare: ## Runs backend commands
 	$(MAKE) composer-install
 
 clean: ## Clean containers
-	U_ID=${UID} docker-compose down --rmi local --volumes --remove-orphans
+	docker-compose down --rmi local --volumes --remove-orphans
 
 # Backend commands
 
 test: ## Execute test suite
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} phpunit --configuration phpunit.xml
+	docker exec -it ${DOCKER_BE} ./vendor/bin/phpunit --configuration phpunit.xml
 
 composer-install: ## Installs composer dependencies
-	U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_BE} composer install --no-scripts --no-interaction --optimize-autoloader
+	docker exec -it ${DOCKER_BE} composer install --no-scripts --no-interaction --optimize-autoloader
 
 
 ssh-be: ## ssh's into the be container
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
+	docker exec -it ${DOCKER_BE} bash
 
 #code-style: ## Runs php-cs to fix code styling following Symfony rules
 #	docker exec -it --user ${UID} ${DOCKER_BE} php-cs-fixer fix src --rules=@Symfony

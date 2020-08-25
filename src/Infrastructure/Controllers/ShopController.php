@@ -6,35 +6,31 @@ namespace ShoppingCart\Infrastructure\Controllers;
 
 use ShoppingCart\Application\UseCases\Item\GetItemImage;
 use ShoppingCart\Infrastructure\Persistence\ItemDAO;
+use ShoppingCart\Infrastructure\Persistence\Product\MySQLProductRepository;
 
 class ShopController
 {
 
-    private $itemsDao;
-
+    private MySQLProductRepository $productsRepository;
 
     /**
      * ShopController constructor.
      */
     public function __construct()
     {
-        $this->itemsDao = new ItemDAO();
-    }
-
-    private function __clone()
-    {
+        $this->productsRepository = new MySQLProductRepository();
     }
 
     /**
      * @return array
      */
-    public function getItems(): array
+    public function getAllProducts(): array
     {
-        return $this->itemsDao->getAll();
+        return $this->productsRepository->getAll();
     }
 
-    public function getItem($id){
-        return $this->itemsDao->getItemWithId($id);
+    public function getProduct($id){
+        return $this->productsRepository->getOfId();
     }
 
     public function getImg($itemId): string
