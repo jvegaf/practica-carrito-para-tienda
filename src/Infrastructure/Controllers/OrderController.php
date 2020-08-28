@@ -5,6 +5,7 @@ namespace ShoppingCart\Infrastructure\Controllers;
 
 
 use ShoppingCart\Domain\Entities\Order;
+use ShoppingCart\Domain\Entities\Order\OrderRepository;
 use ShoppingCart\Infrastructure\Persistence\OrderDAO;
 use ShoppingCart\Infrastructure\Persistence\OrderLineDAO;
 
@@ -12,20 +13,22 @@ class OrderController
 {
 
 
-    private $oDao;
-    private $olDao;
+    private OrderRepository $repository;
 
 
-    public function __construct()
+    public function __construct(OrderRepository $repository)
     {
         session_start();
-        $this->oDao = new OrderDAO();
-        $this->olDao = new OrderLineDAO();
+        $this->repository = $repository;
     }
 
-    public function getOrderId($clientId)
+    public function getOrdersOf($clientId): array
     {
-        $order = $this->oDao->getOrderWithClientId($clientId);
+        $orders = $this->repository->getOfClientId($clientId);
+        if (empty($orders)){
+
+        }
+
         if ($order->getId() == null) {
             $order = $this->createOrderOfClient($clientId);
         }

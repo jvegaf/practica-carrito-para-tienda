@@ -5,7 +5,7 @@ namespace ShoppingCart\Infrastructure\Controllers;
 
 
 use ShoppingCart\Application\UseCases\Item\GetItemImage;
-use ShoppingCart\Infrastructure\Persistence\ItemDAO;
+use ShoppingCart\Domain\Entities\Product\Product;
 use ShoppingCart\Infrastructure\Persistence\Product\MySQLProductRepository;
 
 class ShopController
@@ -29,8 +29,9 @@ class ShopController
         return $this->productsRepository->getAll();
     }
 
-    public function getProduct($id){
-        return $this->productsRepository->getOfId();
+    public function getProduct($id): Product
+    {
+        return $this->productsRepository->getOfId($id);
     }
 
     public function getImg($itemId): string

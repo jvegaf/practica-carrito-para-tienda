@@ -12,6 +12,7 @@ class Order
     protected string $clientId;
     protected string $shippingAdress;
     protected \DateTime $confirmedDate;
+    protected array $orderLines;
 
     public function __construct(string $clientId, string $shippingAdress, \DateTime $confirmedDate, string $id = null)
     {

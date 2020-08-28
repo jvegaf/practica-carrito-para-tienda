@@ -18,7 +18,7 @@ class MainController
         $this->orderC = new OrderController();
         $this->shopC = new ShopController();
         if (isset($_SESSION['clientId'])) {
-            $this->orderC->getOrderId($_SESSION['clientId']);
+            $this->orderC->getOrdersOf($_SESSION['clientId']);
         } else {
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = array();
@@ -35,7 +35,7 @@ class MainController
     {
         $result = $this->clientC->checkClientToken($token);
         if ($result){
-            $this->orderC->getOrderId($_SESSION['clientId']);
+            $this->orderC->getOrdersOf($_SESSION['clientId']);
             $oLines = $this->orderC->getOrderLinesOfOrder($_SESSION['orderId']);
             foreach ($oLines as $item) {
                 array_push($_SESSION['cart'], $item);
@@ -52,7 +52,7 @@ class MainController
             exit();
         }
 
-        $this->orderC->getOrderId($_SESSION['clientId']);
+        $this->orderC->getOrdersOf($_SESSION['clientId']);
         if (isset($_SESSION['cart'])){
             if ( count($_SESSION['cart']) > 0) {
                 foreach ($_SESSION['cart'] as $item){
